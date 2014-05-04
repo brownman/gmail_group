@@ -64,10 +64,7 @@ function detect_xfce()
         echo "$res"
     }
     ########################################################################/
-
     test(){
-
-
         ########################## Test Requirements: ##################################\   
         ################################################################################\
             print_func
@@ -79,17 +76,11 @@ function detect_xfce()
             eval "$cmd" >/dev/null 2>&1 || { echo >&2 "sudo apt-get install $item" ;result=$FAILURE; }
         done
         ########################### test if gmail-notify is running ##########\
-
             cmd=`pull check`
         str=`eval "$cmd"`
         [ -z "$str" ] && { echo >&2 "please run gmail-notify" ;result=$FAILURE; }
-
-
-
         ########################### test if the user update the default configurations ##########\
-
             [ -z "$user" ] && { echo >&2 "please update your gmail settings which located in this file" ;result=$FAILURE; }
-
         return $result
     }
 
@@ -97,7 +88,6 @@ function detect_xfce()
         subject="$1"
         str=`cat $0 | grep "$subject:" | cut -d':' -f2`
         remove_trailing "$str"
-
     }
     expose(){
         subject="$1"
@@ -111,10 +101,8 @@ function detect_xfce()
 
     info(){
         print_func
-
         expose plugin
         expose help
-
         echo -e "[CONFIGURATION]\nuser:\t$user\npassword:\tSome password\nfrom:\t$from\nto:\t$to" 
     }
     unread(){
@@ -123,14 +111,11 @@ function detect_xfce()
             notify-send "OK" "retrieving"
         else
             notify-send "Error" "retrieving"
-
         fi
-
     }
     run(){
         print_func
         print_color 32 "[SEND!]"
-
         echo
         unread > $file_msg
         msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_msg -title "Compose:" )
@@ -143,8 +128,6 @@ function detect_xfce()
             else
                 notify-send "Error" "sending"
             fi
-
-            #>/dev/null
         else
             echo 'skip sending'
         fi
@@ -182,8 +165,6 @@ function detect_xfce()
             print_color 31 'follow the Instructions -> then try again!'
         fi
     }
-
-
 
     [ -f /tmp/err ] && { /bin/rm /tmp/err; }
     [ -f /tmp/env ] && { /bin/rm /tmp/env; }
