@@ -12,6 +12,7 @@
 #change log:
 ##gmail-notify is optional
 ##install xfce4 hotkey:alt+F2
+##add dependencies for: curl gvim
 
 #31 - red
 #32 - green
@@ -162,6 +163,7 @@ function detect_xfce()
             print_color 32 'run!'
             run
         else
+            cat /tmp/err
             print_color 31 'follow the Instructions -> then try again!'
         fi
     }
