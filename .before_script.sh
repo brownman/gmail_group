@@ -8,4 +8,4 @@ echo --------
 ls
 
 
-
+bash -c .presentation.sh

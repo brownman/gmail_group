@@ -1,3 +1,4 @@
+sudo apt-get install toilet pv figlet 1>/dev/null
 clear
 toilet --gay Whats  up ?
 sleep 1

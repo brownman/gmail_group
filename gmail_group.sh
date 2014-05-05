@@ -1,11 +1,11 @@
 #!/bin/bash 
+#version:   4
 #author:    ofer shaham
 #plugin:    gmail-group
 #about:     whatsup clone
-#version:   3
 #date:      5.5.2014
-#time:      16:08
-#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk
+#time:      17:54
+#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv
 #help:      utilize shared gmail to act like the mobile application - whatsup 
 #url_gist:  https://gist.github.com/brownman/9019632
 #check:     ps -ef | grep gmail-notify | grep -v grep
@@ -158,25 +158,30 @@ function detect_xfce()
         ln -sf /tmp/err $dir_self/err
         ln -sf /tmp/env $dir_self/env
     }
+    intro(){
+        echo
+        echo
+print_color 35 "[FOUND A BUG?]"
+echo -e "\t\t\thttps://github.com/brownman/gmail_group/issues/new"
+echo
+echo
+}
     steps(){
         clear
-        print_func
+        intro
         info
-
         installing_symlink    
         str_res=$( eval test )
-
         res=$?
         if [ $res -eq 0 ];then
             print_color 32 'run!'
             info2
             installing_hotkey
-
             run
         else
             echo
-            print_color 32 "\t\t[instructions]"
-            cat /tmp/err
+            print_color 32 "[INSTRUCTIONS]"
+            cat /tmp/err | pv -qL 10
         fi
     }
 
@@ -186,4 +191,6 @@ function detect_xfce()
     exec 2>/tmp/err
     trap trap_err ERR
     set -o nounset
+
     steps
+
