@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/brownman/gmail_group.svg?branch=master)](https://travis-ci.org/brownman/gmail_group)
+
 #gmail_group
 ===========
 #just another Whatsup clone
