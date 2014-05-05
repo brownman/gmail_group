@@ -74,7 +74,7 @@ function detect_xfce()
         list=`pull depend`
         for item in $list;do
             cmd="dpkg -L $item"
-            eval "$cmd" >/dev/null 2>&1 || { echo >&2 "sudo apt-get install $item" ;result=$FAILURE; }
+            eval "$cmd" 1>/dev/null || { echo >&2 "sudo apt-get install $item" ;result=$FAILURE; }
         done
         ########################### test if gmail-notify is running ##########\
             cmd=`pull check`
@@ -163,6 +163,7 @@ function detect_xfce()
             print_color 32 'run!'
             run
         else
+            print_color 32 "-----[INSTRUCTIONS]-----"
             cat /tmp/err
             print_color 31 'follow the Instructions -> then try again!'
         fi
