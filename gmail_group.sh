@@ -4,7 +4,7 @@
 #about:     whatsup clone
 #version:   2
 #date:      4.5.2014
-#depend:    gxmessage libnotify-bin gmail-notify
+#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk
 #help:      utilize shared gmail to act like the mobile application - whatsup 
 #url_gist:  https://gist.github.com/brownman/9019632
 #check:     ps -ef | grep gmail-notify | grep -v grep
