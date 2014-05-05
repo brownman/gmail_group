@@ -1,7 +1,8 @@
 
 before_install:
 #  - sudo apt-get update -qq
-  - sudo apt-get install -y gxmessage libnotify-bin gmail-notify curl vim-gtk pv
+  - sudo apt-get install -y gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet
+
 
 before_script: ./.before_script.sh 
 script:    ./gmail-group.sh
