@@ -1,0 +1,14 @@
+script:    ./gmail-group.sh
+before_script: ./.before_script.sh
+after_script:  ./.after_script.sh
+branches:
+  only:
+      - master
+env:
+  global:
+      - CAMPFIRE_TOKEN=abc123
+      - TIMEOUT=1000
+  matrix:
+      - USE_NETWORK=true
+#    http://docs.travis-ci.com/user/build-configuration/
+#
