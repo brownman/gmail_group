@@ -2,8 +2,9 @@
 #author:    ofer shaham
 #plugin:    gmail-group
 #about:     whatsup clone
-#version:   2
-#date:      4.5.2014
+#version:   3
+#date:      5.5.2014
+#time:      16:08
 #depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk
 #help:      utilize shared gmail to act like the mobile application - whatsup 
 #url_gist:  https://gist.github.com/brownman/9019632
@@ -26,18 +27,22 @@ trap_err(){
     eval "$cmd"
 }
 ################################### env ################################\
-    nickname=${LOGNAME:-''}
+filename=`basename $0`
+dir_self=`pwd`
+file_self=$dir_self/$filename
+FAILURE=1
+SUCCESS=0
+################################### gmail ###############################
+nickname=${LOGNAME:-''}
 user=${GMAIL_USER:-''} #env
 password=${GMAIL_PASSWORD:-''} #env
 from=$user@gmail.com
 to=$user@gmail.com
-FAILURE=1
-SUCCESS=0
-file_msg=/tmp/file_msg.txt
+#===================================tmp files============================
+file_unread=/tmp/file_unread.txt
 file_compose=/tmp/compose.txt
-filename=`basename $0`
-dir_self=`pwd`
-file_self=$dir_self/$filename
+#===================================key combination======================
+HOTKEY="<Alt>F2"
 export TERM=xterm
 #/usr/bin/xterm
 
@@ -64,24 +69,23 @@ function detect_xfce()
         local res=$(echo "$1" | sed -e 's/^ *//g' -e 's/ *$//g')
         echo "$res"
     }
-    ########################################################################/
     test(){
-        ########################## Test Requirements: ##################################\   
-        ################################################################################\
-            print_func
-        result=$SUCCESS
-        ########################## install dependencies ######################\   
+        ########################## Test Requirements: 
+        print_func
+        local result=$SUCCESS
+        ########################## install dependencies 
         list=`pull depend`
         for item in $list;do
             cmd="dpkg -L $item"
-            eval "$cmd" 1>/dev/null || { echo >&2 "sudo apt-get install $item" ;result=$FAILURE; }
+            eval "$cmd" 1>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
         done
-        ########################### test if gmail-notify is running ##########\
-            cmd=`pull check`
+        ########################### test if gmail-notify is running: 
+        cmd=`pull check`
         str=`eval "$cmd"`
-        [ -z "$str" ] && { echo >&2 "please run gmail-notify" ;result=$FAILURE; }
-        ########################### test if the user update the default configurations ##########\
-            [ -z "$user" ] && { echo >&2 "please update your gmail settings which located in this file" ;result=$FAILURE; }
+        [ -n "$str" ] && { echo "[V] gmail-notify is running"; } || { echo >&2 "[X] please run gmail-notify" ;result=$FAILURE; } 
+
+        ########################### test if the user update the default configurations 
+        [ -n "$user" ] && { echo "[V] user is set: $user"; } || { echo >&2 "[X] please update your gmail settings which located in this file" ;result=$FAILURE; }
         return $result
     }
 
@@ -104,6 +108,9 @@ function detect_xfce()
         print_func
         expose plugin
         expose help
+
+    }
+    info2(){
         echo -e "[CONFIGURATION]\nuser:\t$user\npassword:\tSome password\nfrom:\t$from\nto:\t$to" 
     }
     unread(){
@@ -118,8 +125,8 @@ function detect_xfce()
         print_func
         print_color 32 "[SEND!]"
         echo
-        unread > $file_msg
-        msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_msg -title "Compose:" )
+        unread > $file_unread
+        msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_unread -title "Compose:" )
         if [ -n "$msg" ];then
             echo -e "Subject:${nickname}: $msg" > $file_compose
             cmd="curl -u $user:$password --ssl-reqd --mail-from $from --mail-rcpt $to --url smtps://smtp.gmail.com:465 -T $file_compose"
@@ -133,20 +140,20 @@ function detect_xfce()
             echo 'skip sending'
         fi
     }
-    install_hotkey(){
+    installing_hotkey(){
         detect_xfce
         local res=$?
         if [ $res -eq 0 ];then
-            print_color 36 "[INSTALL] hotkey F2"
+            print_color 36 "[INSTALLING] hotkey F2"
             #reason: setup the hotkeys for the robot
-            cmd="xfconf-query -c xfce4-keyboard-shortcuts -p \"/commands/custom/<Alt>F2\" -t string -s \"$file_self\" --create"
+            cmd="xfconf-query -c xfce4-keyboard-shortcuts -p \"/commands/custom/${HOTKEY}\" -t string -s \"$file_self\" --create"
             echo "[cmd] $cmd "
             eval "$cmd"
         else
             print_color 31 "[CONSIDER] setting a key combination: for easier running of this script !"
         fi
     }
-    install_symlink(){
+    installing_symlink(){
         print_func
         ln -sf /tmp/err $dir_self/err
         ln -sf /tmp/env $dir_self/env
@@ -155,17 +162,21 @@ function detect_xfce()
         clear
         print_func
         info
-        install_hotkey
-        install_symlink    
+
+        installing_symlink    
         str_res=$( eval test )
+
         res=$?
         if [ $res -eq 0 ];then
             print_color 32 'run!'
+            info2
+            installing_hotkey
+
             run
         else
-            print_color 32 "-----[INSTRUCTIONS]-----"
+            echo
+            print_color 32 "\t\t[instructions]"
             cat /tmp/err
-            print_color 31 'follow the Instructions -> then try again!'
         fi
     }
 
