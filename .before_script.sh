@@ -4,4 +4,5 @@ echo dedicated to Haviv.W
 echo --------
 cat .travis.yml
 echo --------
-bash -c ./.present.sh
+ls -la
+#bash -c ./.present.sh
