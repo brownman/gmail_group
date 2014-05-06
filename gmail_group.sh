@@ -77,7 +77,7 @@ function detect_xfce()
         list=`pull depend`
         for item in $list;do
             cmd="dpkg -L $item"
-            eval "$cmd" 1>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
+            eval "$cmd" &>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
         done
         ########################### test if gmail-notify is running: 
         cmd=`pull check`
@@ -144,7 +144,7 @@ function detect_xfce()
         detect_xfce
         local res=$?
         if [ $res -eq 0 ];then
-            print_color 36 "[INSTALLING] hotkey F2"
+            print_color 36 "[INSTALLING] hotkey ${HOTKEY}"
             #reason: setup the hotkeys for the robot
             cmd="xfconf-query -c xfce4-keyboard-shortcuts -p \"/commands/custom/${HOTKEY}\" -t string -s \"$file_self\" --create"
             echo "[cmd] $cmd "
@@ -154,7 +154,7 @@ function detect_xfce()
         fi
     }
     installing_symlink(){
-        print_func
+            print_color 36 "[INSTALLING] symlinks"
         ln -sf /tmp/err $dir_self/err
         ln -sf /tmp/env $dir_self/env
     }
