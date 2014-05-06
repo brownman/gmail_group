@@ -23,13 +23,17 @@ compare_version(){
     version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/version && cat /tmp/version)
     version_id_local=$(pull version_id | tee $dir_self/.version)
     change_log_local=$( cat $file_self | grep "++" | tee $dir_self/.changelog)
+
+
     local regular_expression1='^[0-9]+$'
     if  [[ $version_id_master =~ $regular_expression1 ]] && [[ $version_id_local =~ $regular_expression1  ]] ; then
 
         if [ "$version_id_master" -gt "$version_id_local" ];then
             print_color 31 "[A new Version now Available!]"
 
-    change_log_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/changelog && cat /tmp/changelog)
+    change_log_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.changelog 2>/dev/null 1>/tmp/changelog && cat /tmp/changelog)
+    echo "$change_log_master"
+    
         else
             print_color 32 "[running the latest version]"
         fi
