@@ -5,8 +5,8 @@ before_install:
 
 
 #before_script: ./.before_script.sh 
-script:    ./gmail-group.sh
-after_script:  ./.after_script.sh
+script: gmail-group.sh
+after_script:  .after_script.sh
 branches:
   only:
       - master

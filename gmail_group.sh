@@ -10,24 +10,26 @@
 #check:     ps -ef | grep gmail-notify | grep -v grep
 #
 #change log:
-##gmail-notify is optional
-##install xfce4 hotkey:alt+F2
-##add dependencies for: curl gvim
-##limit execution for user:not root
-##compare local and remote versions
+##[++] gmail-notify is optional
+##[++] install xfce4 hotkey:alt+F2
+##[++] add dependencies for: curl gvim
+##[++] limit execution for user:not root
+##[++] compare local and remote versions
 
 #31 - red
 #32 - green
 #33 - yellow
 compare_version(){
     version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/version && cat /tmp/version)
-
     version_id_local=$(pull version_id | tee $dir_self/.version)
+    change_log_local=$( cat $file_self | grep "++" | tee $dir_self/.changelog)
     local regular_expression1='^[0-9]+$'
     if  [[ $version_id_master =~ $regular_expression1 ]] && [[ $version_id_local =~ $regular_expression1  ]] ; then
 
         if [ "$version_id_master" -gt "$version_id_local" ];then
             print_color 31 "[A new Version now Available!]"
+
+    change_log_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/changelog && cat /tmp/changelog)
         else
             print_color 32 "[running the latest version]"
         fi
