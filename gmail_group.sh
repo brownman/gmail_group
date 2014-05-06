@@ -20,14 +20,21 @@
 #32 - green
 #33 - yellow
 compare_version(){
-    version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 1>/tmp/version && cat /tmp/version)
-    version_id_local=$(pull version_id | tee $dir_self/.version)
-    echo "[remote version] $version_id_master"
-    echo "[local version] $version_id_local"
-    if [ $version_id_master -gt $version_id_local ];then
-        print_color 31 "[A new Version now Available!]"
+    version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/version && cat /tmp/version)
+    local regular_expression1='^[0-9]+$'
+    if ! [[ $version_id_master =~ $regular_expression1 ]] || [[ $version_id_local =~ $regular_expression1  ]] ; then
+        echo "error: Not a number" >&2; return 1;
     else
-        print_color 32 "[running the latest version]"
+
+        version_id_local=$(pull version_id | tee $dir_self/.version)
+        echo "[remote version] $version_id_master"
+        echo "[local version] $version_id_local"
+        if [ "$version_id_master" -gt "$version_id_local" ];then
+            print_color 31 "[A new Version now Available!]"
+        else
+            print_color 32 "[running the latest version]"
+        fi
+
     fi
 }
 ensure_user(){
@@ -41,7 +48,7 @@ trap_err(){
     eval "$cmd"
 }
 ################################### env ################################\
-filename=`basename $0`
+    filename=`basename $0`
 dir_self=`pwd`
 file_self=$dir_self/$filename
 FAILURE=1
@@ -166,21 +173,22 @@ function detect_xfce()
         fi
     }
     installing_symlink(){
-            print_color 36 "[INSTALLING] symlinks"
+        print_color 36 "[INSTALLING] symlinks"
         ln -sf /tmp/err $dir_self/err
         ln -sf /tmp/env $dir_self/env
     }
     info_bug_report(){
         echo
         echo
-print_color 35 "[FOUND A BUG?]"
-echo -e "\t\t\thttps://github.com/brownman/gmail_group/issues/new"
-echo
-echo
-}
+        print_color 35 "[FOUND A BUG?]"
+        echo -e "\t\t\thttps://github.com/brownman/gmail_group/issues/new"
+        echo
+        echo
+    }
     steps(){
         clear
         info_bug_report
+        compare_version
         info_title
         ensure_user
         installing_symlink    
@@ -205,4 +213,4 @@ echo
     set -o nounset
 
     steps
-compare_version
+
