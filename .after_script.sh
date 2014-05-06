@@ -1,2 +1,3 @@
 echo ------------------
-pv -qL 10 The End !!!
+
+echo "The End !!!" |  pv -qL 10
