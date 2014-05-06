@@ -1,24 +1,26 @@
 #!/bin/bash 
-#version:   4
+#version:   5
 #author:    ofer shaham
 #plugin:    gmail-group
 #about:     whatsup clone
-#date:      5.5.2014
-#time:      17:54
+#date:      6.5.2014
+#time:      08:05 
 #depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet
-#help:      utilize shared gmail to act like the mobile application - whatsup 
-#url_gist:  https://gist.github.com/brownman/9019632
+#help:      utilize shared gmail to act like the mobile application - WhatsUp 
 #check:     ps -ef | grep gmail-notify | grep -v grep
 #
 #change log:
 ##gmail-notify is optional
 ##install xfce4 hotkey:alt+F2
 ##add dependencies for: curl gvim
+##limit execution for user:not root
 
 #31 - red
 #32 - green
 #33 - yellow
-
+ensure_user(){
+    [ "$(id -u)" = 0 ] && { print_color 31 "[You Are Root!]\tplease run as user";exit 0; } || { print_color 32  "[Running As User]\t$LOGNAME"; }
+}
 trap_err(){
     local str_caller=`caller`
     print_func
@@ -104,14 +106,13 @@ function detect_xfce()
         echo -e "--> ${FUNCNAME[1]}():" 
     }
 
-    info(){
-        print_func
+    info_title(){
         expose plugin
         expose help
 
     }
-    info2(){
-        echo -e "[CONFIGURATION]\nuser:\t$user\npassword:\tSome password\nfrom:\t$from\nto:\t$to" 
+    info_conf(){
+        echo -e "[CONFIGURATION]\n\t\tuser:\t$user\n\t\tpassword:\tSome password\n\t\tfrom:\t$from\n\t\tto:\t$to" 
     }
     unread(){
         curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | tr -d '\n' | awk -F '<entry>' '{for (i=2; i<=NF; i++) {print $i}}' | sed -n "s/<title>\(.*\)<\/title.*name>\(.*\)<\/name>.*/\ \1/p"
@@ -121,8 +122,7 @@ function detect_xfce()
             notify-send "Error" "retrieving"
         fi
     }
-    run(){
-        print_func
+    compose(){
         print_color 32 "[SEND!]"
         echo
         unread > $file_unread
@@ -158,7 +158,7 @@ function detect_xfce()
         ln -sf /tmp/err $dir_self/err
         ln -sf /tmp/env $dir_self/env
     }
-    intro(){
+    info_bug_report(){
         echo
         echo
 print_color 35 "[FOUND A BUG?]"
@@ -168,16 +168,16 @@ echo
 }
     steps(){
         clear
-        intro
-        info
+        info_bug_report
+        info_title
+        ensure_user
         installing_symlink    
         str_res=$( eval test )
         res=$?
         if [ $res -eq 0 ];then
-            print_color 32 'run!'
-            info2
+            info_conf
             installing_hotkey
-            run
+            compose
         else
             echo
             print_color 32 "[INSTRUCTIONS]"
