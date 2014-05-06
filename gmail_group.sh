@@ -1,5 +1,5 @@
 #!/bin/bash 
-#version:   5
+#version_id:   5
 #author:    ofer shaham
 #plugin:    gmail-group
 #about:     whatsup clone
@@ -14,12 +14,24 @@
 ##install xfce4 hotkey:alt+F2
 ##add dependencies for: curl gvim
 ##limit execution for user:not root
+##compare local and remote versions
 
 #31 - red
 #32 - green
 #33 - yellow
+compare_version(){
+    version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 1>/tmp/version && cat /tmp/version)
+    version_id_local=$(pull version_id | tee $dir_self/.version)
+    echo "[remote version] $version_id_master"
+    echo "[local version] $version_id_local"
+    if [ $version_id_master -gt $version_id_local ];then
+        print_color 31 "[A new Version now Available!]"
+    else
+        print_color 32 "[running the latest version]"
+    fi
+}
 ensure_user(){
-    [ "$(id -u)" = 0 ] && { print_color 31 "[You Are Root!]\tplease run as user";exit 0; } || { print_color 32  "[Running As User]\t$LOGNAME"; }
+    [ "$(id -u)" = 0 ] && { print_color 31 "[You Are Root!]..\tplease run as user";exit 0; } || { print_color 32  "[Running As User]\t$LOGNAME"; }
 }
 trap_err(){
     local str_caller=`caller`
@@ -193,4 +205,4 @@ echo
     set -o nounset
 
     steps
-
+compare_version
