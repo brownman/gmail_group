@@ -5,16 +5,18 @@
 #about:     whatsup clone
 #date:      6.5.2014
 #time:      08:05 
-#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet
+#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet sox libsox-fmt-mp3
 #help:      utilize shared gmail to act like the mobile application - WhatsUp 
 #check:     ps -ef | grep gmail-notify | grep -v grep
 #
 #change log:
-##[++] gmail-notify is optional
-##[++] install xfce4 hotkey:alt+F2
-##[++] add dependencies for: curl gvim
-##[++] limit execution for user:not root
-##[++] compare local and remote versions
+#++ gmail-notify is optional
+#++ install xfce4 hotkey:alt+F2
+#++ add dependencies for: curl gvim
+#++ limit execution for user:not root
+#++ compare local and remote versions
+#++ compare local and remote versions
+#++ local translation of outgoing message
 
 #31 - red
 #32 - green
@@ -22,7 +24,7 @@
 compare_version(){
     version_id_master=$( curl https://raw.githubusercontent.com/brownman/gmail_group/master/.version 2>/dev/null 1>/tmp/version && cat /tmp/version)
     version_id_local=$(pull version_id | tee $dir_self/.version)
-    change_log_local=$( cat $file_self | grep "++" | tee $dir_self/.changelog)
+    change_log_local=$( cat $file_self | grep "++" | grep -v 'grep' | sed 's/++//g' | tee $dir_self/.changelog)
 
 
     local regular_expression1='^[0-9]+$'
@@ -72,6 +74,7 @@ to=$user@gmail.com
 file_unread=/tmp/file_unread.txt
 file_compose=/tmp/compose.txt
 #===================================key combination======================
+teach_me_lang=ar
 HOTKEY="<Alt>F2"
 export TERM=xterm
 #/usr/bin/xterm
@@ -156,6 +159,7 @@ function detect_xfce()
         unread > $file_unread
         msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_unread -title "Compose:" )
         if [ -n "$msg" ];then
+            $dir_self/.translate.sh "$teach_me_lang" "$msg"
             echo -e "Subject:${nickname}: $msg" > $file_compose
             cmd="curl -u $user:$password --ssl-reqd --mail-from $from --mail-rcpt $to --url smtps://smtp.gmail.com:465 -T $file_compose"
             eval "$cmd" 
