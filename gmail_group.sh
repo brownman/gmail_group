@@ -74,7 +74,7 @@ to=$user@gmail.com
 file_unread=/tmp/file_unread.txt
 file_compose=/tmp/compose.txt
 #===================================key combination======================
-teach_me_lang=ar
+teach_me_lang=ru
 HOTKEY="<Alt>F2"
 export TERM=xterm
 #/usr/bin/xterm
@@ -145,6 +145,10 @@ function detect_xfce()
     info_conf(){
         echo -e "[CONFIGURATION]\n\t\tuser:\t$user\n\t\tpassword:\tSome password\n\t\tfrom:\t$from\n\t\tto:\t$to" 
     }
+    translate_it(){
+   local msg="$1" 
+                        $dir_self/translate.sh "$teach_me_lang" "$msg" 
+    }
     unread(){
         curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | tr -d '\n' | awk -F '<entry>' '{for (i=2; i<=NF; i++) {print $i}}' | sed -n "s/<title>\(.*\)<\/title.*name>\(.*\)<\/name>.*/\ \1/p"
         if [ $? -eq 0 ];then
@@ -159,10 +163,12 @@ function detect_xfce()
         unread > $file_unread
         msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_unread -title "Compose:" )
         if [ -n "$msg" ];then
-            $dir_self/.translate.sh "$teach_me_lang" "$msg"
+
             echo -e "Subject:${nickname}: $msg" > $file_compose
             cmd="curl -u $user:$password --ssl-reqd --mail-from $from --mail-rcpt $to --url smtps://smtp.gmail.com:465 -T $file_compose"
             eval "$cmd" 
+translate_it "$msg"
+
             if [ $? -eq 0 ];then
                 notify-send "OK" "sending"
             else

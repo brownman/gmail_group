@@ -3,17 +3,16 @@ step0(){
     dir_mp3=/tmp
     dir_html=/tmp
 }
-
-step1(){
-    echo "input: $input"
+step1() {
+ echo "input: $input"
     input_wsp=$(echo "$input"|sed 's/ /+/g');
     input_ws=$(echo "$input"|sed 's/ /_/g');
-    file_txt=$(  echo $dir_txt/${input_ws}_${lang}.txt )
-    file_mp3=$(  echo $dir_mp3/${input_ws}_${lang}.mp3 )
-    file_html=$(  echo $dir_html/${input_ws}_${lang}.html )
-    file_mp3=$(  echo $dir_mp3/${input_ws}_${lang}.mp3 )
-    echo "input_wsp: $input_wsp"
-    echo "file_mp3:  $file_mp3"
+    file_txt=$(  echo $dir_txt/${input_ws}_${lang}.txt );
+    file_mp3=$(  echo $dir_mp3/${input_ws}_${lang}.mp3 );
+    file_html=$(  echo $dir_html/${input_ws}_${lang}.html );
+    file_mp3=$(  echo $dir_mp3/${input_ws}_${lang}.mp3 );
+    echo "input_wsp: $input_wsp";
+    echo "file_mp3:  $file_mp3";
 }
 
 step2(){
@@ -50,15 +49,12 @@ step3(){
     #    mpg321 $file_mp3 1> /dev/null
     eval "$cmd" 
 }
-
 steps(){
     step0
     step1
     step2
     step3
 }
-
-mute(){
 if [ $# -gt 1 ];then
     lang="$1"
     shift
@@ -67,4 +63,4 @@ if [ $# -gt 1 ];then
 else
     echo reason_of_death "need 2 arguments - got $#"
 fi
-}
+
