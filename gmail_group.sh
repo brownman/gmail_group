@@ -58,29 +58,6 @@ trap_err(){
     echo "[cmd] $cmd"
     eval "$cmd"
 }
-################################### env ################################\
-    filename=`basename $0`
-dir_self=`pwd`
-file_self=$dir_self/$filename
-FAILURE=1
-SUCCESS=0
-################################### gmail ###############################
-nickname=${LOGNAME:-''}
-user=${GMAIL_USER:-''} #env
-password=${GMAIL_PASSWORD:-''} #env
-from=$user@gmail.com
-to=$user@gmail.com
-#===================================tmp files============================
-file_unread=/tmp/file_unread.txt
-file_compose=/tmp/compose.txt
-#===================================key combination======================
-teach_me_lang=ru
-HOTKEY="<Alt>F2"
-export TERM=xterm
-#/usr/bin/xterm
-
-
-########################################################################/
 
 function detect_xfce()
 {
@@ -147,7 +124,7 @@ function detect_xfce()
     }
     translate_it(){
    local msg="$1" 
-                        $dir_self/translate.sh "$teach_me_lang" "$msg" 
+                        $dir_self/.translate.sh "$teach_me_lang" "$msg" 
     }
     unread(){
         curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | tr -d '\n' | awk -F '<entry>' '{for (i=2; i<=NF; i++) {print $i}}' | sed -n "s/<title>\(.*\)<\/title.*name>\(.*\)<\/name>.*/\ \1/p"
@@ -223,13 +200,19 @@ translate_it "$msg"
             cat /tmp/err | pv -qL 10
         fi
     }
-
+################################### env ################################\
+    filename=`basename $0`
+dir_self=`pwd`
+file_self=$dir_self/$filename
+source $dir_self/setup.cfg
+####################################catch the fucken bug#######################/
     [ -f /tmp/err ] && { /bin/rm /tmp/err; }
     [ -f /tmp/env ] && { /bin/rm /tmp/env; }
     env>/tmp/env
     exec 2>/tmp/err
     trap trap_err ERR
     set -o nounset
+########################################################################/
 
     steps
 

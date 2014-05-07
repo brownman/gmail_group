@@ -1,8 +1,8 @@
-echo HackerU advance linux group 
-echo Akol Tov !
-echo dedicated to Haviv.W
+echo install dependencies 
+sudo apt-get install -y `cat gmail_group.sh | grep depend -m1 | sed 's/#depend://g'`
+ exit
 echo --------
+
 cat .travis.yml
-echo --------
-ls -la
-#bash -c ./.present.sh
+echo -----------
+bash -c ./.present.sh
