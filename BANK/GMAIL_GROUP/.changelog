@@ -1,0 +1,8 @@
+# gmail-notify is optional
+# install xfce4 hotkey:alt+F2
+# add dependencies for: curl gvim
+# limit execution for user:not root
+# compare local and remote versions
+# compare local and remote versions
+# local translation of outgoing message
+        curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | tr -d '\n' | awk -F '<entry>' '{for (i=2; i<=NF; i) {print $i}}' | sed -n "s/<title>\(.*\)<\/title.*name>\(.*\)<\/name>.*/\ \1/p"

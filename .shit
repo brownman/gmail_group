@@ -1,0 +1,8 @@
+local   dir_next_menu=$dir_self/$str
+  
+# ls -dl $dir_next_menu 
+local file_next_menu=$dir_next_menu/menu.sh
+  
+str=$( eval    $file_next_menu )
+res=$?
+

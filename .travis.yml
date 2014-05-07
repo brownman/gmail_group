@@ -6,7 +6,7 @@
 
 
 before_script: ./.before_script.sh 
-script: bash -c ./gmail_group.sh
+script: bash -c ./BANK/GMAIL_GROUP/menu.sh
 after_script:  bash -c ./.after_script.sh
 branches:
   only:

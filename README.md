@@ -16,4 +16,4 @@
 #./gmail_group.sh
 ```
 
-![demo](./VIDEO/installation.gif)
+![demo](./.VIDEO/installation.gif)

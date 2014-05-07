@@ -1,0 +1,4 @@
+http://newbiedoc.sourceforge.net/tutorials/apt-get-intro/info.html
+http://cli.learncodethehardway.org/bash_cheat_sheet.pdf
+http://www.maketecheasier.com/cheatsheet/vim-keyboard-shortcuts-cheatsheet/
+http://www.cheatography.com/davechild/cheat-sheets/regular-expressions/
