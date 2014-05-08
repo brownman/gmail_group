@@ -1,0 +1,1 @@
+http://www.centos.org/docs/5/html/yum/sn-yum-maintenance.html

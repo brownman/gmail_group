@@ -1,0 +1,4 @@
+Recommended >> https://www.digitalocean.com/community/articles/how-to-use-psad-to-detect-network-intrusion-attempts-on-an-ubuntu-vps
+Recommended >> http://www.cyberciti.biz/faq/linux-detect-port-scan-attacks/
+
+http://www.unixmen.com/how-to-block-port-scan-attacks-with-psad-on-ubuntu-debian/

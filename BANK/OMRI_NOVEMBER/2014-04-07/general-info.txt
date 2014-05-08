@@ -1,0 +1,8 @@
+Postfix: This Mail Transfer Agent (MTA) handles relaying mail between different servers. It decides what to do with email from the outside world, and whether a particular user is allowed to send email using your server. It handles both incoming and outgoing SMTP. Postfix hands off local delivery (that is, the actual saving of the mail files on the server) to Dovecot's Local Mail Transfer Protocol service (LMTP). Postfix also lets Dovecot take care of authentication before users are allowed to send email from the server. We'll use version 2.9.6.
+
+
+Dovecot: This IMAP/POP3 server handles requests from users who want to log in and check their email.
+
+
+
+ Dovecot's LMTP service functions as the Mail Delivery Agent (MDA) by saving mail files on the server. Dovecot also handles all authorization. It checks users' email addresses and passwords in the MySQL database before allowing them to view or send email. We'll use version 2.0.19.

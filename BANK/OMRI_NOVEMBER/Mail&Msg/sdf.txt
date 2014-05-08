@@ -1,0 +1,11 @@
+* DHCP Server
+* DNS Server
+* Web Server
+* Proxy Server
+* Authentication Server \ Authorization Server
+* File Server
+* Gateway
+
+
+* Database Server
+* Mail Server

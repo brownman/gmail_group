@@ -1,0 +1,21 @@
+root@debiantst:~# ./VBoxLinuxAdditions.run 
+Verifying archive integrity... All good.
+Uncompressing VirtualBox 4.1.4 Guest Additions for Linux.........
+VirtualBox Guest Additions installer
+Removing installed version 4.1.4 of VirtualBox Guest Additions...
+Removing existing VirtualBox DKMS kernel modules ...done.
+Removing existing VirtualBox non-DKMS kernel modules ...done.
+Building the VirtualBox Guest Additions kernel modules
+The headers for the current running kernel were not found. If the following
+module compilation fails then this could be the reason.
+
+Building the main Guest Additions module ...done.
+Building the shared folder support module ...fail!
+(Look at /var/log/vboxadd-install.log to find out what went wrong)
+Doing non-kernel setup of the Guest Additions ...done.
+Installing the Window System drivers
+Warning: unknown version of the X Window System installed.  Not installing
+X Window System drivers.
+Installing modules ...done.
+Installing graphics libraries and desktop services components ...done.
+root@debiantst:~# 

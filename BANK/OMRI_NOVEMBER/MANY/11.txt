@@ -1,0 +1,3 @@
+http://askubuntu.com/questions/38009/how-do-i-remove-the-unity-launcher
+http://superuser.com/questions/68089/how-can-i-add-menu-items-to-the-gnome-applications-menu-from-the-command-line
+http://www.tech-recipes.com/rx/2756/ubuntu_install_compiz_config_settings_manager_configure_desktop_effects/
