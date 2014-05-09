@@ -1,22 +1,23 @@
 #!/bin/bash 
-#version_id:   5
+#version_id:   6
 #author:    ofer shaham
 #plugin:    gmail-group
 #about:     whatsup clone
-#date:      6.5.2014
-#time:      08:05 
-#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet sox libsox-fmt-mp3 zenity
+#date:      9.5.2014
+#time:      16:06
+#depend:    gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet sox libsox-fmt-mp3 zenity fortunes
 #help:      utilize shared gmail to act like the mobile application - WhatsUp 
 #check:     ps -ef | grep gmail-notify | grep -v grep
 #
 #change log:
-#++ gmail-notify is optional
+#++ gmail-notify is not compulsary
 #++ install xfce4 hotkey:alt+F2
 #++ add dependencies for: curl gvim
 #++ limit execution for user:not root
 #++ compare local and remote versions
 #++ compare local and remote versions
 #++ local translation of outgoing message
+#++ if test failed then notify the gui-user 
 
 #31 - red
 #32 - green
@@ -93,8 +94,8 @@ function detect_xfce()
         ########################## install dependencies 
         list=`pull depend`
         for item in $list;do
-            cmd="dpkg -L $item"
-            eval "$cmd" &>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
+            cmd="dpkg -S $item"
+            eval "$cmd" 1>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
         done
         ########################### test if gmail-notify is running: 
         cmd=`pull check`
@@ -208,15 +209,21 @@ function detect_xfce()
         else
             echo
             print_color 32 "[INSTRUCTIONS]"
+            notify-send "Error" "gmail_group"
             cat /tmp/err | pv -qL 10
         fi
     }
         ################################### env ################################\
+
     filename=`basename $0`
 #    dir_self=`pwd`
     dir_self=`where_am_i`
     file_self=$dir_self/$filename
+    [ ! -f $dir_self/setup.cfg ] && { cp $dir_self/.setup.example.cfg $dir_self/setup.cfg;  }
     source $dir_self/setup.cfg
+    echo "[language I want to learn]"
+    cat -n $dir_self/languages.txt
+    echo
     ####################################catch the fucken bug#######################/
     [ -f /tmp/err ] && { /bin/rm /tmp/err; }
     [ -f /tmp/env ] && { /bin/rm /tmp/env; }
@@ -227,3 +234,7 @@ function detect_xfce()
     ########################################################################/
 
     steps
+    print_color 35 "[fortune]"
+    cowsay `fortune`
+    echo
+    echo
