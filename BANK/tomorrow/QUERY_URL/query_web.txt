@@ -1,4 +1,0 @@
-https://github.com/search?q=${1}&type=Repositories&ref=searchresults
-https://github.com/search?q=${1}&ref=searchresults&type=Code
-http://www.cyberciti.biz/faq/?s=${1}
-http://stackoverflow.com/search?q=${1}

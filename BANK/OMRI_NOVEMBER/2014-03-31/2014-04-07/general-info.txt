@@ -1,6 +1,0 @@
-- Binding - Multiple ip address on multilple *Virtual* Network interfaces
-( eth0:1, eth1:2,etc.... -_-' )
-
-- Bonding(aka Teaming) - "Floating"\"Virtual" Address on multiple physical Network interfaces( bond0 >> eth0,eth1 
-
-ifenslave

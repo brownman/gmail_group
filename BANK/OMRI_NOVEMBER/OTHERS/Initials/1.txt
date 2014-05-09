@@ -1,4 +1,0 @@
-- for file in `cat listoffiles`; do mv "$file" /path/of/destination ; done
-- xargs -a file_list.txt mv -t /path/to/dest
-- ( cat filenames.txt; echo /path/to/move/files/to ) | xargs mv
-- cat filenames.txt | xargs mv -t /path/to/move/files/to

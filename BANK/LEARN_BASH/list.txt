@@ -1,5 +1,0 @@
-abs
-bashism
-omri_nov
-QUERY_URL
-syntax_tips
