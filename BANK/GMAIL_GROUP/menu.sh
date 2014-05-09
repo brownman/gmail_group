@@ -131,7 +131,11 @@ function detect_xfce()
     }
     translate_it(){
         local msg="$1" 
-        $dir_self/.translate.sh "$teach_me_lang" "$msg" 
+        local file_languages=$dir_self/languages.txt 
+        while  read line;do
+        $dir_self/.translate.sh "$line" "$msg" 
+        done <$file_languages
+
     }
     unread(){
         curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | tr -d '\n' | awk -F '<entry>' '{for (i=2; i<=NF; i++) {print $i}}' | sed -n "s/<title>\(.*\)<\/title.*name>\(.*\)<\/name>.*/\ \1/p"
@@ -208,8 +212,9 @@ function detect_xfce()
         fi
     }
         ################################### env ################################\
-        filename=`basename $0`
-    dir_self=`pwd`
+    filename=`basename $0`
+#    dir_self=`pwd`
+    dir_self=`where_am_i`
     file_self=$dir_self/$filename
     source $dir_self/setup.cfg
     ####################################catch the fucken bug#######################/
