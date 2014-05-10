@@ -1,0 +1,22 @@
+
+#before_install:
+#  - sudo apt-get update -qq
+#- sudo apt-get install -y  `gxmessage libnotify-bin gmail-notify curl vim-gtk pv cowsay toilet figlet sox libsox-fmt-mp3`
+  
+
+
+before_script: ./.before_script.sh 
+script: bash -c ./BANK/GMAIL_GROUP/gmail_group.sh
+after_script:  bash -c ./.after_script.sh
+branches:
+  only:
+      - master
+env:
+#  global:
+#      - CAMPFIRE_TOKEN=abc123
+#      - TIMEOUT=1000
+  matrix:
+      - USE_NETWORK=true
+#GOOD TO KNOW:
+# http://docs.travis-ci.com/user/build-configuration/
+#
