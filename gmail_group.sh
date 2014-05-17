@@ -98,9 +98,9 @@ function detect_xfce()
             eval "$cmd" 1>/dev/null && { echo "[V] package exist: $item"; } || { echo >&2 "[X] sudo apt-get install $item" ;result=$FAILURE; }
         done
         ########################### test if gmail-notify is running: 
-        cmd=`pull check`
-        str=`eval "$cmd"`
-        [ -n "$str" ] && { echo "[V] gmail-notify is running"; } || { echo >&2 "[X] please run gmail-notify" ;result=$FAILURE; } 
+#        cmd=`pull check`
+ #       str=`eval "$cmd"`
+ #       [ -n "$str" ] && { echo "[V] gmail-notify is running"; } || { echo >&2 "[X] please run gmail-notify" ;result=$FAILURE; } 
 
         ########################### test if the user update the default configurations 
         [ -n "$user" ] && { echo "[V] user is set: $user"; } || { echo >&2 "[X] please update your gmail settings which located in this file" ;result=$FAILURE; }
@@ -150,19 +150,21 @@ function detect_xfce()
         print_color 32 "[SEND!]"
         echo
         unread > $file_unread
-        msg=$( gxmessage -entry -sticky -ontop -timeout 3000  -file $file_unread -title "Compose:" )
+        msg=$( gxmessage -entrytext "$str_first" -sticky -ontop -timeout 3000  -file $file_unread -title "Compose:" )
         if [ -n "$msg" ];then
 
             echo -e "Subject:${nickname}: $msg" > $file_compose
             cmd="curl -u $user:$password --ssl-reqd --mail-from $from --mail-rcpt $to --url smtps://smtp.gmail.com:465 -T $file_compose"
             eval "$cmd" 
-            translate_it "$msg"
+
 
             if [ $? -eq 0 ];then
                 notify-send "OK" "sending"
             else
                 notify-send "Error" "sending"
             fi
+
+            ( translate_it "$msg" &)
         else
             echo 'skip sending'
         fi
@@ -215,7 +217,9 @@ function detect_xfce()
     }
         ################################### env ################################\
 
+    str_first="$@"
     filename=`basename $0`
+
 #    dir_self=`pwd`
     dir_self=`where_am_i`
     file_self=$dir_self/$filename
@@ -235,6 +239,7 @@ function detect_xfce()
 
     steps
     print_color 35 "[fortune]"
-    cowsay `fortune`
+    (    cowsay "$( fortune )" )
     echo
     echo
+    echo The End
